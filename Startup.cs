@@ -46,14 +46,14 @@ namespace swagger_proxy
 
             app.UseSwagger(c =>
             {
-                c.PreSerializeFilters.Add((swagger, httpReq) =>
-                {
-                    swagger.Servers = new List<OpenApiServer> { new OpenApiServer { Url = $"{httpReq.Scheme}://{httpReq.Host.Value}" } };
-                });
+                //c.PreSerializeFilters.Add((swagger, httpReq) =>
+                //{
+                //    swagger.Servers = new List<OpenApiServer> { new OpenApiServer { Url = $"{httpReq.Scheme}://{httpReq.Host.Value}" } };
+                //});
             });
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.SwaggerEndpoint("v1/swagger.json", "My API V1");
             });
 
             app.UseRouting();
