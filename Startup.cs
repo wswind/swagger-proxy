@@ -37,24 +37,35 @@ namespace swagger_proxy
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            //if (env.IsDevelopment())
+            //app.UseSwagger(c =>
             //{
-            //    app.UseDeveloperExceptionPage();
-            //}
-
-            //app.UseHttpsRedirection();
-
-            app.UseSwagger(c =>
-            {
-                //c.PreSerializeFilters.Add((swagger, httpReq) =>
-                //{
-                //    swagger.Servers = new List<OpenApiServer> { new OpenApiServer { Url = $"{httpReq.Scheme}://{httpReq.Host.Value}" } };
-                //});
-            });
+            //    c.PreSerializeFilters.Add((swagger, httpReq) =>
+            //    {
+            //        swagger.Servers = new List<OpenApiServer> { new OpenApiServer { Url = $"{httpReq.Scheme}://{httpReq.Host.Value}" } };
+            //    });
+            //});
+            app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("v1/swagger.json", "My API V1");
             });
+
+            //// Enable middleware to serve generated Swagger as a JSON endpoint.
+            //app.UseSwagger(c => {
+            //    //change the path to include /api
+            //    c.RouteTemplate = "/api/swagger/{documentName}/swagger.json";
+            //});
+
+            //// Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+            //// specifying the Swagger JSON endpoint.
+            //app.UseSwaggerUI(c =>
+            //{
+            //    //Notice the lack of / making it relative
+            //    c.SwaggerEndpoint("/api/swagger/v1/swagger.json", "My API V1");
+            //    //This is the reverse proxy address
+            //    c.RoutePrefix = "api1";
+            //});
+
 
             app.UseRouting();
 
