@@ -1,0 +1,1 @@
+https://github.com/domaindrivendev/Swashbuckle.AspNetCore/issues/662
