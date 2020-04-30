@@ -53,8 +53,7 @@ namespace swagger_proxy
             {
                 c.PreSerializeFilters.Add((swagger, httpReq) =>
                 {
-                    var prefix = httpReq.Headers["X-Forwarded-Prefix"];
-                    swagger.Servers = new List<OpenApiServer> { new OpenApiServer { Url = $"{httpReq.Scheme}://{httpReq.Host.Value}/{prefix}" } };
+                    swagger.Servers = new List<OpenApiServer> { new OpenApiServer { Url = $"{httpReq.Scheme}://{httpReq.Host.Value}/{httpReq.Headers["X-Forwarded-Prefix"]}" } };
                 });
             });
 
