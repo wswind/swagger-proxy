@@ -26,8 +26,7 @@ namespace swagger_proxy.Controllers
         [HttpGet]
         public string Get()
         {
-            var port = HttpContext.Request.Host.Port;
-            return $"port:{port} host:{HttpContext.Request.Host}";
+            return $"host:{HttpContext.Request.Host} prefix: {HttpContext.Request.Headers["X-Forwarded-Prefix"]}";
         }
     }
 }
