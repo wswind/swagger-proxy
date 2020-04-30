@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -37,37 +38,27 @@ namespace swagger_proxy
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            //app.UseSwagger(c =>
-            //{
-            //    c.PreSerializeFilters.Add((swagger, httpReq) =>
-            //    {
-            //        swagger.Servers = new List<OpenApiServer> { new OpenApiServer { Url = $"{httpReq.Scheme}://{httpReq.Host.Value}" } };
-            //    });
-            //});
-            app.UseSwagger();
+            app.UseRouting();
+
+           
+           
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
+
+            app.UseSwagger(c =>
+            {
+                c.PreSerializeFilters.Add((swagger, httpReq) =>
+                {
+                    swagger.Servers = new List<OpenApiServer> { new OpenApiServer { Url = $"{httpReq.Scheme}://{httpReq.Host.Value}:5011/api1" } };
+                });
+            });
+
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("v1/swagger.json", "My API V1");
             });
-
-            //// Enable middleware to serve generated Swagger as a JSON endpoint.
-            //app.UseSwagger(c => {
-            //    //change the path to include /api
-            //    c.RouteTemplate = "/api/swagger/{documentName}/swagger.json";
-            //});
-
-            //// Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
-            //// specifying the Swagger JSON endpoint.
-            //app.UseSwaggerUI(c =>
-            //{
-            //    //Notice the lack of / making it relative
-            //    c.SwaggerEndpoint("/api/swagger/v1/swagger.json", "My API V1");
-            //    //This is the reverse proxy address
-            //    c.RoutePrefix = "api1";
-            //});
-
-
-            app.UseRouting();
 
             app.UseAuthorization();
 
